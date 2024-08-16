@@ -1,5 +1,6 @@
 # Управление библиотекой
 
+[![Docker Image CI](https://github.com/SZyablov/library-service/actions/workflows/docker-image.yml/badge.svg)](https://github.com/SZyablov/library-service/actions/workflows/docker-image.yml)
 
 ## Техническое задание
 <details><summary>Подробнее</summary>
