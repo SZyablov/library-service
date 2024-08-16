@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>METANIT.COM</title>
+    <meta charset="utf-8" />
+</head>
+<body>
+
+    <div class="books" style="border: 1px solid black; padding: 10px; display: inline-block; vertical-align: top;">
+        <h3 style="margin: 0;">Books</h3>
+        <a href="/books">/books/</a><br>
+        <a id="book-by-id" href="/books">/books/{id}/</a><br>
+        <a href="/books_search/">/books_search/</a><br>
+        <div id="books-message"></div>
+        <p>
+            ID: <br /> 
+            <input name="id" id="books-id" type="number" />
+        </p>
+        <p>
+            Title: <br /> 
+            <input name="title" id="books-title"/>
+        </p>
+        <p>
+            Author ID: <br /> 
+            <input name="author_id" id="books-author_id" type="number" />
+        </p>
+        <p>
+            Published year: <br /> 
+            <input name="published_year" id="books-published_year" type="number" />
+        </p>
+        <p>
+            ISBN: <br /> 
+            <input name="isbn" id="books-isbn" />
+        </p>
+        <p>
+            Pages: <br /> 
+            <input name="pages" id="books-pages" type="number" />
+        </p>
+        <button onclick="post_book()">POST</button>
+        <button onclick="put_book()">PUT</button>
+        <button onclick="delete_book()">DELETE</button>
+    </div>
+
+    <div class="authors" style="border: 1px solid black; padding: 10px; display: inline-block; vertical-align: top;">
+        <h3 style="margin: 0;">Authors</h3>
+        <a href="/authors">/authors/</a><br>
+        <a id="author-by-id" href="/authors">/authors/{id}/</a><br>
+        <div id="authors-message"></div>
+        <p>
+            ID: <br /> 
+            <input name="id" id="authors-id" type="number" />
+        </p>
+        <p>
+            Name: <br /> 
+            <input name="name" id="authors-name"/>
+        </p>
+        <p>
+            Birth year: <br /> 
+            <input name="birth_year" id="authors-birth_year" type="number" />
+        </p>
+        <p>
+            Nationality: <br /> 
+            <input name="nationality" id="authors-nationality" />
+        </p>
+        <button onclick="post_authors()">POST</button>
+        <button onclick="put_authors()">PUT</button>
+        <button onclick="delete_authors()">DELETE</button>
+    </div>
+
+<script>
+    document.querySelector("#books-id").addEventListener("input", (event) => {
+        var new_href = '/books/' + document.querySelector("#books-id").value + '/'
+        document.querySelector("#book-by-id").setAttribute('href', new_href)
+        document.querySelector("#book-by-id").innerHTML= new_href
+    });
+    document.querySelector("#authors-id").addEventListener("input", (event) => {
+        var new_href = '/authors/' + document.querySelector("#authors-id").value + '/'
+        document.querySelector("#author-by-id").setAttribute('href', new_href)
+        document.querySelector("#author-by-id").innerHTML= new_href
+    });
+
+    async function post_book(){
+ 
+        // получаем введеное в поле имя и возраст
+        const title = document.getElementById("books-title").value;
+        const author_id = document.getElementById("books-author_id").value;
+        const published_year = document.getElementById("books-published_year").value;
+        const isbn = document.getElementById("books-isbn").value;
+        const pages = document.getElementById("books-pages").value;
+ 
+        // отправляем запрос
+        const response = await fetch("/books", {
+                method: "POST",
+                headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                body: JSON.stringify({ 
+                    title: title,
+                    author_id: author_id,
+                    published_year: published_year,
+                    isbn: isbn,
+                    pages: pages
+                })
+            });
+            if (response.ok) {
+                const data = await response.json();
+                document.getElementById("books-message").textContent = JSON.stringify(data);
+            }
+            else
+                console.log(response);
+    }
+    async function put_book(){
+ 
+        // получаем введеное в поле имя и возраст
+        const id = document.getElementById("books-id").value;
+        const title = document.getElementById("books-title").value;
+        const author_id = document.getElementById("books-author_id").value;
+        const published_year = document.getElementById("books-published_year").value;
+        const isbn = document.getElementById("books-isbn").value;
+        const pages = document.getElementById("books-pages").value;
+
+        // отправляем запрос
+        const response = await fetch("/books/"+id, {
+                method: "PUT",
+                headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    id: id,
+                    title: title,
+                    author_id: author_id,
+                    published_year: published_year,
+                    isbn: isbn,
+                    pages: pages
+                })
+            });
+            if (response.ok) {
+                const data = await response.json();
+                document.getElementById("books-message").textContent = JSON.stringify(data);
+            }
+            else
+                console.log(response);
+    }
+    async function delete_book(){
+ 
+        // получаем введеное в поле имя и возраст
+        const id = document.getElementById("books-id").value;
+
+        // отправляем запрос
+        const response = await fetch("/books/"+id, {
+                method: "DELETE",
+                headers: { "Accept": "application/json", "Content-Type": "application/json" }
+            });
+            if (response.ok) {
+                console.log(response);
+                const data = await response.json();
+                document.getElementById("books-message").textContent = JSON.stringify(data);
+            }
+            else
+                console.log(response);
+    }
+
+    async function post_authors(){
+ 
+        // получаем введеное в поле имя и возраст
+        const name = document.getElementById("authors-name").value;
+        const birth_year = document.getElementById("authors-birth_year").value;
+        const nationality = document.getElementById("authors-nationality").value;
+
+        // отправляем запрос
+        const response = await fetch("/authors", {
+                method: "POST",
+                headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                body: JSON.stringify({ 
+                    name: name,
+                    birth_year: birth_year,
+                    nationality: nationality
+                })
+            });
+            if (response.ok) {
+                const data = await response.json();
+                document.getElementById("authors-message").textContent = JSON.stringify(data);
+            }
+            else
+                console.log(response);
+    }
+    async function put_authors(){
+ 
+        // получаем введеное в поле имя и возраст
+        const id = document.getElementById("authors-id").value;
+        const name = document.getElementById("authors-name").value;
+        const birth_year = document.getElementById("authors-birth_year").value;
+        const nationality = document.getElementById("authors-nationality").value;
+
+        // отправляем запрос
+        const response = await fetch("/authors/"+id, {
+                method: "PUT",
+                headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                body: JSON.stringify({ 
+                    id: id,
+                    name: name,
+                    birth_year: birth_year,
+                    nationality: nationality
+                })
+            });
+            if (response.ok) {
+                const data = await response.json();
+                document.getElementById("authors-message").textContent = JSON.stringify(data);
+            }
+            else
+                console.log(response);
+    }
+    async function delete_authors(){
+ 
+        // получаем введеное в поле имя и возраст
+        const id = document.getElementById("authors-id").value;
+
+        // отправляем запрос
+        const response = await fetch("/authors/"+id, {
+                method: "DELETE",
+                headers: { "Accept": "application/json", "Content-Type": "application/json" }
+            });
+            if (response.ok) {
+                const data = await response.json();
+                document.getElementById("authors-message").textContent = JSON.stringify(data);
+            }
+            else
+                console.log(response);
+    }
+</script>
+</body>
+</html>

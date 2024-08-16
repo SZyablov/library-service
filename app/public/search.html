@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>METANIT.COM</title>
+    <meta charset="utf-8" />
+</head>
+<body>
+
+    <div class="books" style="border: 1px solid black; padding: 10px; display: inline-block; vertical-align: top;">
+        <h3 style="margin: 0;">Search books</h3>
+        <p>
+            Title: <br /> 
+            <input name="title" id="books-title"/>
+        </p>
+        <p>
+            Author ID: <br /> 
+            <input name="author_id" id="books-author_id" type="number" />
+        </p>
+        <p>
+            Published year: <br /> 
+            <input name="published_year" id="books-published_year" type="number" />
+        </p>
+        <button onclick="search()">POST</button>
+    </div>
+    <div id="books-message"></div>
+
+<script>
+
+    async function search(){
+ 
+        const url = new URL(window.location.origin + '/books/search/')
+        
+        var title = document.getElementById("books-title").value;
+        if (title != ''){ url.searchParams.append("title", title) }
+
+        var author_id = document.getElementById("books-author_id").value;
+        if (author_id != ''){ url.searchParams.append("author_id", author_id) }
+
+        var published_year = document.getElementById("books-published_year").value;
+        if (published_year != ''){ url.searchParams.append("published_year", published_year) }
+        
+        const response = await fetch(
+            url, 
+            {
+                method: "GET",
+                headers: { "Accept": "application/json", "Content-Type": "application/json" },
+            }
+        );
+        if (response.ok) {
+            const data = await response.json();
+            document.getElementById("books-message").innerHTML = JSON.stringify(data);
+        }
+        else
+            console.log(response);
+    }
+    
+</script>
+</body>
+</html>
