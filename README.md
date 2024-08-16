@@ -1,4 +1,4 @@
-# Управление библиотекой
+# Управление библиотекой (в разработке)
 
 [![Docker Image CI](https://github.com/SZyablov/library-service/actions/workflows/docker-image.yml/badge.svg)](https://github.com/SZyablov/library-service/actions/workflows/docker-image.yml)
 
